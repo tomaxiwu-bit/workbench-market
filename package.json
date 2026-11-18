@@ -1,0 +1,10 @@
+{
+  "main": "server.js",
+  "description": "工作台市集：豆包工作工作台的收录与分享站",
+  "private": true,
+  "name": "workbench-market",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

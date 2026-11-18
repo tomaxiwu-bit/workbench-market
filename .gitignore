@@ -1,0 +1,8 @@
+# 本地敏感与运行时文件
+config.json
+data/
+tools/
+*.log
+node_modules/
+*.png
+.env
