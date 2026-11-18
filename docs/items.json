@@ -183,6 +183,83 @@
       "shareUrl": "",
       "source": "official",
       "approvedAt": "2026-11-18T15:54:34.550Z"
+    },
+    {
+      "id": 3,
+      "name": "大学生课业与竞赛",
+      "author": "吴同学",
+      "scene": "教育教学",
+      "summary": "把课程作业、竞赛申报、实验报告和组会汇报收进一个空间，学期中不用每次从零描述要求。",
+      "audience": "本科在读、正在准备学科竞赛或大创的学生",
+      "skills": [
+        "PPT",
+        "表格",
+        "Seedream 5.5",
+        "操作电脑"
+      ],
+      "plugins": [
+        "本地电脑"
+      ],
+      "usage": "开学第一次把课程表、教材版本、竞赛通知丢给它，之后每次只说「按上次的格式」。要写竞赛材料就说「按五段结构写」。",
+      "shareUrl": "https://www.doubao.com/workbench-share/62186390272275202",
+      "source": "user",
+      "approvedAt": "2026-11-18T16:55:11.076Z"
+    },
+    {
+      "id": 4,
+      "name": "应届求职工作台",
+      "author": "吴同学",
+      "scene": "求职发展",
+      "summary": "从岗位调研到简历改写、面试题库、offer 对比，一条链路走完，适合没有实习资源的人。",
+      "audience": "没有大厂实习经历、要投暑期实习和秋招的应届生",
+      "skills": [],
+      "plugins": [],
+      "usage": "简历只贴一段经历，它会说哪条最弱、怎么改、改后原文。模拟面试默认一次 3 题，答完再点评。",
+      "shareUrl": "https://www.doubao.com/workbench-share/62183793341352706",
+      "source": "user",
+      "approvedAt": "2026-11-18T17:04:37.000Z"
+    },
+    {
+      "id": 5,
+      "name": "生物科研工作台",
+      "author": "吴同学",
+      "scene": "科研学术",
+      "summary": "文献精读、实验方案设计、SDS-PAGE 与 PCR 类操作规程和结果讨论，一个空间收完。",
+      "audience": "生物、生化、农学方向在读生，做分子与蛋白相关实验",
+      "skills": [],
+      "plugins": [],
+      "usage": "贴条带照片或实验记录，它会按「目的—材料—步骤—关键参数—失败原因」组织分析。文献解读区分作者结论与证据强度。",
+      "shareUrl": "https://www.doubao.com/workbench-share/62190500690481922",
+      "source": "user",
+      "approvedAt": "2026-11-18T17:04:37.036Z"
+    },
+    {
+      "id": 6,
+      "name": "考研保研工作台",
+      "author": "吴同学",
+      "scene": "教育教学",
+      "summary": "把择校、专业课框架、真题拆解、复试材料整理成一条线，减少信息搜集的重复劳动。",
+      "audience": "准备考研或保研、专业课资料多到不知从哪下手的学生",
+      "skills": [],
+      "plugins": [],
+      "usage": "专业课按「考点—考法—易错—练习」四段整理；真题先给题型分布再逐题给路径，不直接抄答案。",
+      "shareUrl": "https://www.doubao.com/workbench-share/62183762390956034",
+      "source": "user",
+      "approvedAt": "2026-11-18T17:04:37.049Z"
+    },
+    {
+      "id": 7,
+      "name": "中英论文写作工作台",
+      "author": "吴同学",
+      "scene": "写作出版",
+      "summary": "中文成稿、英文润色、期刊格式校对、审稿意见回复，一条链路做完，按学术写作标准改。",
+      "audience": "要投中英文期刊、需要润色与复审回复的研究生和本科生",
+      "skills": [],
+      "plugins": [],
+      "usage": "英文润色给「改前 / 改后 / 为什么改」三栏对照；参考文献按指定格式，不编造，不确定标「待核」。",
+      "shareUrl": "https://www.doubao.com/workbench-share/62285482043115522",
+      "source": "user",
+      "approvedAt": "2026-11-18T17:04:37.063Z"
     }
   ]
 }
