@@ -2,6 +2,30 @@
 
 一个可公开部署的「豆包工作工作台」收录站：浏览、搜索、复制导入链接，并允许他人投稿，站方审核后上线。
 
+## 两个版本（同一份代码）
+
+| 版本 | 地址 | 投稿方式 | 适合 |
+|---|---|---|---|
+| **静态版（已上线）** | https://tomaxiwu-bit.github.io/workbench-market/ | 表单生成 GitHub Issue，站主合并 | 公开给人看，零服务器成本 |
+| **本地全功能版** | `node server.js` → localhost:8686 | 网页表单直接写入，后台口令审核 | 想零门槛收投稿、自己做审核 |
+
+静态版在 `docs/`，Pages 从 main 分支的 `/docs` 发布；仓库：https://github.com/tomaxiwu-bit/workbench-market
+
+### 静态版的数据怎么更新
+
+本地后台审核通过后，跑一次同步脚本，再推送：
+
+```powershell
+node sync-docs.js
+git add docs/items.json
+git commit -m "update items"
+git push
+```
+
+Pages 约 1 分钟后自动重建。
+
+> 静态版的投稿要 GitHub 账号（普通国内用户大多没有），所以两条线并行跑：静态版负责"被人看见"，隧道版负责"让人真能投"。
+
 ## 它有什么
 
 - **市集首页**：按场景分类（金融投研 / 医疗健康 / 教育教学 / 创意设计 / 求职发展 / 数据分析…）、搜索、最新 / 最热排序
