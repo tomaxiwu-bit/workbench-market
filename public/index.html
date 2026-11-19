@@ -235,6 +235,19 @@
   footer .wrap{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
   footer .right{margin-left:auto}
 
+  /* ---------- 界面截图 ---------- */
+  .shot{
+    margin:-22px -22px 14px;height:150px;overflow:hidden;background:#0D0D0C;
+    border-bottom:1px solid var(--line-soft)
+  }
+  .shot img{width:100%;height:100%;object-fit:cover;object-position:50% 47%;display:block}
+  .shot.ph{display:grid;place-items:center;background:var(--paper-2);height:110px}
+  .shot.ph span{font-family:var(--serif);font-size:26px;color:#B9B4A6;letter-spacing:.02em}
+  .hero-shot{
+    display:block;width:100%;height:236px;object-fit:cover;object-position:50% 45%;
+    border:1px solid var(--line-soft);border-radius:9px;margin:2px 0 18px;background:#0D0D0C
+  }
+
   /* ---------- 引导 ---------- */
   .guide{
     display:grid;grid-template-columns:repeat(3,1fr);margin:30px 0 0;
@@ -521,11 +534,21 @@ async function paintSkills(){
   });
 }
 
+/* 有真实界面截图的条目显示封面，其余用浅色首字占位 */
+const SHOT_IDS = ['3', '4', '5', '6', '7'];
+function shotHTML(it){
+  if(SHOT_IDS.indexOf(String(it.id)) >= 0){
+    return `<div class="shot"><img src="shots/${it.id}.jpg" alt="${esc(it.name)} 界面预览" loading="lazy"></div>`;
+  }
+  return `<div class="shot ph"><span>${esc((it.name || '台').slice(0,1))}</span></div>`;
+}
+
 function cardHTML(it){
   const skills = (it.skills || []).slice(0,3);
   const on = getFavs().indexOf(String(it.id)) >= 0;
   return `
   <article class="card" data-id="${it.id}">
+    ${shotHTML(it)}
     <div class="card-head">
       <div class="ico-box">${esc((it.name || '台').slice(0,1))}</div>
       <div style="flex:1;min-width:0">
@@ -581,6 +604,7 @@ function showSheet(it){
       </div>
       <button class="x" onclick="closeSheet()">✕</button>
     </div>
+    ${SHOT_IDS.indexOf(String(it.id)) >= 0 ? `<img class="hero-shot" src="shots/${it.id}.jpg" alt="${esc(it.name)} 界面预览">` : ''}
     <div class="meta-row">
       <span class="tag">${esc(it.scene)}</span>
       ${it.source==='official' ? '<span class="badge official">官方预置</span>' : '<span class="badge">用户分享</span>'}
