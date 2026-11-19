@@ -235,6 +235,46 @@
   footer .wrap{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
   footer .right{margin-left:auto}
 
+  /* ---------- 引导 ---------- */
+  .guide{
+    display:grid;grid-template-columns:repeat(3,1fr);margin:30px 0 0;
+    border:1px solid var(--line);border-radius:11px;background:var(--card);overflow:hidden
+  }
+  .guide .step{padding:20px 22px;border-right:1px solid var(--line-soft)}
+  .guide .step:last-child{border-right:0}
+  .guide .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:9px}
+  .guide .step h4{margin:0 0 6px;font-size:13.5px;font-weight:600;letter-spacing:-.005em}
+  .guide .step p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.8}
+
+  /* ---------- 收藏 ---------- */
+  .fav{
+    border:0;background:transparent;padding:0;font-size:14px;line-height:1;color:#C6C1B4;
+    cursor:pointer;flex:none;transition:color .15s
+  }
+  .fav:hover{color:var(--accent)}
+  .fav.on{color:var(--accent-deep)}
+
+  /* ---------- 技能云 ---------- */
+  .skills{margin:14px 0 0;padding-bottom:10px}
+  .skills .h{font-size:11px;color:var(--muted);letter-spacing:.05em;margin-bottom:10px}
+  .skills .srow{display:flex;gap:6px;flex-wrap:wrap}
+  .skills .sk{
+    border:1px solid var(--line);background:var(--card);border-radius:6px;padding:4px 9px;
+    font-size:11.5px;color:var(--ink-soft);transition:.15s
+  }
+  .skills .sk:hover{border-color:#D8D3C5;color:var(--ink);background:#fff}
+
+  /* ---------- 详情页同场景推荐 ---------- */
+  .rel .h{font-size:11px;color:var(--muted);letter-spacing:.05em;margin:20px 0 9px}
+  .rel-list{display:flex;flex-direction:column;gap:6px}
+  .rel-item{
+    text-align:left;border:1px solid var(--line-soft);background:var(--paper-2);border-radius:8px;
+    padding:9px 12px;font-size:12.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:.15s
+  }
+  .rel-item:hover{border-color:#D8D3C5;background:#fff}
+  .rel-item b{font-weight:600}
+  .rel-item span{color:var(--muted);font-size:11px;margin-left:auto;white-space:nowrap}
+
   @media (max-width:720px){
     .wrap{padding:0 20px}
     .hero{padding:40px 0 12px}
@@ -245,6 +285,8 @@
     .sheet{padding:22px;margin:0 auto}
     form.card{padding:22px}
     .done{padding:32px 20px}
+    .guide{grid-template-columns:1fr}
+    .guide .step{border-right:0;border-bottom:1px solid var(--line-soft)}
   }
 </style>
 </head>
@@ -314,7 +356,11 @@ function toast(msg){
 function route(){
   const h = location.hash.replace(/^#/, '') || '/';
   const nav = $('#nav');
-  if(h.startsWith('/item/')){ openItem(h.split('/')[2]); return; }
+  if(h.startsWith('/item/')){
+    renderHome();
+    openItem(h.split('/')[2]);
+    return;
+  }
   nav.querySelectorAll('a').forEach(a=>{
     const r = a.dataset.r;
     a.classList.toggle('on', r === '/' ? h === '/' : h.startsWith('/' + r));
@@ -336,23 +382,44 @@ async function renderHome(){
       <p class="lead">豆包工作的每个工作台，都是一套预置好的技能、插件与做事偏好。这里收着大家愿意分享的那一份——找到适合你职业的，也可以把自己的交出来。</p>
       <div class="statline" id="stats"></div>
     </section>
+    <section class="guide">
+      <div class="step">
+        <div class="k">Step 01</div>
+        <h4>进到市集</h4>
+        <p>打开豆包工作电脑版，点左上角「豆包工作」展开下拉，底部「更多工作台」就是市场页。</p>
+      </div>
+      <div class="step">
+        <div class="k">Step 02</div>
+        <h4>复制链接导入</h4>
+        <p>在工作台市场右上角点「导入」，把卡片里复制的分享链接粘进去，整套技能与插件会一起搬过来。</p>
+      </div>
+      <div class="step">
+        <div class="k">Step 03</div>
+        <h4>改成自己的</h4>
+        <p>导入后进「我的工作台」点「使用」，偏好指令可以直接改。调顺手了，回头也交一份出来。</p>
+      </div>
+    </section>
     <div class="toolbar">
       <div class="search"><span class="ico">⌕</span><input id="q" placeholder="搜工作台、技能或作者，例如「面试」「财报」" value="${esc(S.q)}"></div>
       <div class="seg" id="srcseg">
         <button data-s="" class="${S.source===''?'on':''}">全部</button>
         <button data-s="user" class="${S.source==='user'?'on':''}">用户分享</button>
         <button data-s="official" class="${S.source==='official'?'on':''}">官方预置</button>
+        <button data-s="fav" class="${S.source==='fav'?'on':''}">我的收藏</button>
       </div>
       <select class="sort" id="sort">
         <option value="new"${S.sort==='new'?' selected':''}>最新收录</option>
         <option value="hot"${S.sort==='hot'?' selected':''}>最多人用</option>
+        <option value="name"${S.sort==='name'?' selected':''}>名称 A–Z</option>
       </select>
     </div>
     <div class="chips" id="chips"></div>
     <div class="grid" id="grid"><div class="empty">正在加载…</div></div>
+    <section class="skills" id="skillcloud"></section>
   `;
   paintStats();
   paintChips();
+  paintSkills();
   $('#q').addEventListener('input', e=>{ S.q = e.target.value; renderGrid(); });
   $('#sort').addEventListener('change', e=>{ S.sort = e.target.value; renderGrid(); });
   $('#srcseg').addEventListener('click', e=>{
@@ -390,23 +457,73 @@ async function renderGrid(){
   const qs = new URLSearchParams();
   if(S.q) qs.set('q', S.q);
   if(S.scene) qs.set('scene', S.scene);
-  if(S.source) qs.set('source', S.source);
-  qs.set('sort', S.sort);
+  if(S.source && S.source !== 'fav') qs.set('source', S.source);
+  qs.set('sort', S.sort === 'name' ? 'new' : S.sort);
   try{
     const j = await api('/api/items?' + qs.toString());
-    S.items = j.items;
-    if(!j.items.length){
-      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>这里还没有工作台</b>换个关键词，或者成为第一个投稿的人</div>`;
+    let items = j.items || [];
+    if(S.source === 'fav'){
+      const f = getFavs();
+      items = items.filter(i => f.indexOf(String(i.id)) >= 0);
+    }
+    if(S.sort === 'name'){
+      items = items.slice().sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'zh-Hans-CN'));
+    }
+    S.items = items;
+    if(!items.length){
+      const msg = S.source === 'fav'
+        ? '<b>收藏夹还是空的</b>在卡片右上角点一下星标，就能把它留在这里'
+        : '<b>这里还没有工作台</b>换个关键词，或者成为第一个投稿的人';
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">${msg}</div>`;
       return;
     }
-    grid.innerHTML = j.items.map(cardHTML).join('');
+    grid.innerHTML = items.map(cardHTML).join('');
   }catch(e){
     grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>加载失败</b>${esc(e.message)}</div>`;
   }
 }
 
+/* 收藏：只存本地，不上传 */
+function getFavs(){
+  try{ return JSON.parse(localStorage.getItem('wb_favs') || '[]').map(String); }catch(e){ return []; }
+}
+function toggleFav(id){
+  const f = getFavs(), k = String(id), i = f.indexOf(k);
+  if(i >= 0) f.splice(i, 1); else f.push(k);
+  try{ localStorage.setItem('wb_favs', JSON.stringify(f)); }catch(e){}
+  return i < 0;
+}
+
+/* 技能云：按出现次数排，点一下直接筛 */
+async function paintSkills(){
+  const box = $('#skillcloud');
+  if(!box) return;
+  let all = [];
+  try{ const j = await api('/api/items'); all = j.items || []; }catch(e){ box.innerHTML = ''; return; }
+  const map = new Map();
+  all.forEach(i => (i.skills || []).forEach(s => {
+    const k = String(s).trim();
+    if(k) map.set(k, (map.get(k) || 0) + 1);
+  }));
+  const top = [...map.entries()]
+    .sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0], 'zh-Hans-CN'))
+    .slice(0, 10);
+  if(!top.length){ box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="h">大家常配的技能，点一下筛出来</div><div class="srow">${
+    top.map(([s, n]) => `<button class="sk" data-sk="${esc(s)}">${esc(s)} · ${n}</button>`).join('')}</div>`;
+  box.querySelector('.srow').addEventListener('click', e => {
+    const b = e.target.closest('[data-sk]');
+    if(!b) return;
+    S.q = b.dataset.sk;
+    const q = $('#q');
+    if(q) q.value = S.q;
+    renderGrid();
+  });
+}
+
 function cardHTML(it){
   const skills = (it.skills || []).slice(0,3);
+  const on = getFavs().indexOf(String(it.id)) >= 0;
   return `
   <article class="card" data-id="${it.id}">
     <div class="card-head">
@@ -415,6 +532,7 @@ function cardHTML(it){
         <h3 class="card-title">${esc(it.name)}</h3>
         <div class="card-author">${esc(it.author)} · ${esc(it.scene)}</div>
       </div>
+      <button class="fav ${on?'on':''}" data-fav="${it.id}" title="${on?'取消收藏':'收藏'}">${on?'★':'☆'}</button>
       ${it.source==='official' ? '<span class="badge official">官方预置</span>' : '<span class="badge">用户分享</span>'}
     </div>
     <div class="card-summary">${esc(it.summary)}</div>
@@ -427,6 +545,17 @@ function cardHTML(it){
 }
 
 $('#main').addEventListener('click', async e=>{
+  const fv = e.target.closest('[data-fav]');
+  if(fv){
+    e.stopPropagation();
+    const on = toggleFav(fv.dataset.fav);
+    fv.classList.toggle('on', on);
+    fv.textContent = on ? '★' : '☆';
+    fv.title = on ? '取消收藏' : '收藏';
+    toast(on ? '已收进收藏夹' : '已取消收藏');
+    if(S.source === 'fav') renderGrid();
+    return;
+  }
   const cp = e.target.closest('[data-copy]');
   if(cp){ e.stopPropagation(); const it = S.items.find(i=>i.id==cp.dataset.copy); if(it) doCopy(it); return; }
   const card = e.target.closest('.card[data-id]');
@@ -467,6 +596,7 @@ function showSheet(it){
         <div class="tip">在豆包工作里打开「工作台 → 导入」，粘贴这条链接，整套技能与插件会一起搬过来。</div>`
       : `<p>这是豆包工作自带的预置场景，不需要导入：打开电脑版豆包工作，点左侧「工作台」入口直接切换。</p>`}
     </div>
+    ${relHTML(it)}
     <div class="sheet-foot">
       <button class="btn" onclick="doCopyById(${it.id}, true)">复制推荐文案</button>
       <button class="btn ghost" onclick="closeSheet()">关闭</button>
@@ -480,6 +610,15 @@ function closeSheet(){
   $('#mask').classList.remove('show');
   document.body.style.overflow = '';
   if(location.hash.startsWith('#/item/')) history.replaceState(null,'','#/');
+}
+
+function relHTML(it){
+  const rel = (S.items || []).filter(i => String(i.id) !== String(it.id) && i.scene === it.scene).slice(0, 3);
+  if(!rel.length) return '';
+  return `<div class="rel">
+    <div class="h">同场景的另外几个</div>
+    <div class="rel-list">${rel.map(r => `<button class="rel-item" onclick="openItem(${r.id})"><b>${esc(r.name)}</b><span>${esc(r.author)}</span></button>`).join('')}</div>
+  </div>`;
 }
 $('#mask').addEventListener('click', e=>{ if(e.target.id === 'mask') closeSheet(); });
 document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeSheet(); });
