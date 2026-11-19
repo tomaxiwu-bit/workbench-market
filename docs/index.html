@@ -10,12 +10,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="工作台市集">
 <meta property="og:title" content="工作台市集 · 把好用的工作台交给同路的人">
-<meta property="og:description" content="13 个豆包工作场景工作台，含 5 个用户亲手调好的。复制链接就能导入，也可以交一份自己的。">
+<meta property="og:description" content="23 个豆包工作场景工作台：15 个用户亲手调的配方，其中 5 条复制链接就能导入。">
 <meta property="og:url" content="https://tomaxiwu-bit.github.io/workbench-market/">
 <meta property="og:image" content="https://tomaxiwu-bit.github.io/workbench-market/shots/3.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="工作台市集 · 把好用的工作台交给同路的人">
-<meta name="twitter:description" content="13 个豆包工作场景工作台，含 5 个用户亲手调好的。复制链接就能导入。">
+<meta name="twitter:description" content="23 个豆包工作场景工作台：15 个用户亲手调的配方，其中 5 条复制链接就能导入。">
 <meta name="twitter:image" content="https://tomaxiwu-bit.github.io/workbench-market/shots/3.jpg">
 <style>
   :root{
@@ -132,6 +132,11 @@
     font-size:13.5px;color:#4A4742;line-height:1.7;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:46px
   }
+  .card-quote{
+    font-family:var(--serif);font-size:12.5px;line-height:1.6;color:#7C776C;font-style:italic;
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+    padding-left:9px;border-left:2px solid var(--accent-soft);margin-top:-2px
+  }
   .tags{display:flex;gap:5px;flex-wrap:wrap}
   .tag{font-size:11px;color:#6E6A61;background:var(--paper-2);padding:2px 8px;border-radius:5px;letter-spacing:.01em}
   .card-foot{
@@ -170,6 +175,10 @@
     font-weight:600;margin:0 0 9px
   }
   .block p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.8;white-space:pre-wrap}
+  .block p.q{
+    font-family:var(--serif);font-size:15.5px;line-height:1.75;color:#4A4238;
+    border-left:3px solid var(--accent);padding-left:14px;white-space:normal
+  }
   .link-box{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
   .link-box input{
     flex:1;min-width:200px;height:40px;border:1px solid var(--line);border-radius:8px;
@@ -184,6 +193,25 @@
   .btn.primary{background:var(--ink);border-color:var(--ink);color:#FAF9F5;font-weight:500}
   .btn.primary:hover{background:#2C2A27;border-color:#2C2A27}
   .btn.ghost{background:transparent}
+  .btn.big{padding:13px 26px;font-size:14.5px;border-radius:9px;display:inline-block;text-decoration:none}
+  .btn.primary.big{background:var(--accent-deep);border-color:var(--accent-deep);color:#FDF8F4}
+  .btn.primary.big:hover{background:#A65A39;border-color:#A65A39}
+  .submit-main{padding:4px 0 30px;border-bottom:1px solid var(--line);margin-bottom:34px}
+  .sub-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.75}
+  .prep{margin-bottom:36px;max-width:720px}
+  .prep-head{font-family:var(--serif);font-size:15.5px;margin-bottom:14px}
+  .prep ol{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+  .prep li{font-size:13.5px;line-height:1.75}
+  .prep li b{font-family:var(--serif);font-weight:500;margin-right:9px;color:var(--ink)}
+  .prep li span{color:var(--muted)}
+  .alt{max-width:720px;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:22px 24px}
+  .alt-head{font-family:var(--serif);font-size:15.5px;margin-bottom:8px}
+  .alt p{font-size:13.5px;color:var(--muted);margin:0 0 14px;line-height:1.75}
+  .alt textarea{
+    width:100%;min-height:158px;font-family:var(--mono);font-size:12px;line-height:1.9;
+    border:1px solid var(--line);border-radius:8px;padding:13px;background:var(--paper);
+    color:var(--ink-soft);resize:vertical;margin-bottom:12px
+  }
   .btn:disabled{opacity:.45;cursor:not-allowed}
   .sheet-foot{display:flex;gap:8px;margin-top:26px;flex-wrap:wrap;align-items:center;padding-top:18px;border-top:1px solid var(--line-soft)}
   .tip{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7}
@@ -476,7 +504,7 @@ async function renderHome(){
     <section class="hero">
       <div class="eyebrow">Workbench Marketplace</div>
       <h1>把好用的<em>工作台</em>，<br>交给同路的人</h1>
-      <p class="lead">豆包工作的每个工作台，都是一套预置好的技能、插件与做事偏好。这里收着大家愿意分享的那一份——找到适合你职业的，也可以把自己的交出来。</p>
+      <p class="lead">豆包工作的每个工作台，都是一套预置好的技能、插件与做事偏好。这里收着别人愿意交出来的那一份：有的已经调顺手了，复制链接就能导入；有的写清了「原来卡在哪、第一句话怎么说」，照着搭一遍也就有了。</p>
       <div class="statline" id="stats"></div>
     </section>
     <section class="guide">
@@ -500,7 +528,7 @@ async function renderHome(){
       <div class="search"><span class="ico">⌕</span><input id="q" placeholder="搜工作台、技能或作者，例如「面试」「财报」" value="${esc(S.q)}"></div>
       <div class="seg" id="srcseg">
         <button data-s="" class="${S.source===''?'on':''}">全部</button>
-        <button data-s="user" class="${S.source==='user'?'on':''}">用户分享</button>
+        <button data-s="user" class="${S.source==='user'?'on':''}">用户做的</button>
         <button data-s="official" class="${S.source==='official'?'on':''}">官方预置</button>
         <button data-s="fav" class="${S.source==='fav'?'on':''}">我的收藏</button>
       </div>
@@ -530,9 +558,9 @@ async function renderHome(){
 
 function paintStats(){  const st = META.stats || {};
   $('#stats').innerHTML = `
-    <div class="stat"><b>${fmt(st.total)}</b><span>用户分享</span></div>
-    <div class="stat"><b>${fmt(st.official)}</b><span>官方预置</span></div>
-    <div class="stat"><b>${fmt(st.authors)}</b><span>贡献者</span></div>`;
+    <div class="stat"><b>${fmt(st.total)}</b><span>用户工作台</span></div>
+    <div class="stat"><b>${fmt(st.links)}</b><span>可直接导入</span></div>
+    <div class="stat"><b>${fmt(st.official)}</b><span>官方预置</span></div>`;
 }
 
 function paintChips(){
@@ -561,6 +589,10 @@ async function renderGrid(){
       const diff = (b.copies || 0) - (a.copies || 0);
       if (diff) return diff;
     }
+    // 能直接导入的真人分享在前，其次是配方，官方预置沉底
+    const w = x => x.source === 'official' ? 2 : (x.shareUrl ? 0 : 1);
+    const k = w(a) - w(b);
+    if (k) return k;
     return String(b.approvedAt || '').localeCompare(String(a.approvedAt || ''));
   });
   S.items = list;
@@ -621,6 +653,10 @@ function shotHTML(it){
 
 function cardHTML(it){  const skills = (it.skills || []).slice(0,3);
   const on = getFavs().indexOf(String(it.id)) >= 0;
+  const badge = it.source==='official'
+    ? '<span class="badge official">官方预置</span>'
+    : (it.kind==='recipe' ? '<span class="badge">配方 · 可自建</span>' : '<span class="badge">用户分享</span>');
+  const footAction = it.shareUrl ? '复制链接' : (it.kind==='recipe' ? '看配方' : '查看说明');
   return `
   <article class="card" data-id="${it.id}">
     ${shotHTML(it)}
@@ -631,13 +667,14 @@ function cardHTML(it){  const skills = (it.skills || []).slice(0,3);
         <div class="card-author">${esc(it.author)} · ${esc(it.scene)}</div>
       </div>
       <button class="fav ${on?'on':''}" data-fav="${it.id}" title="${on?'取消收藏':'收藏'}">${on?'★':'☆'}</button>
-      ${it.source==='official' ? '<span class="badge official">官方预置</span>' : '<span class="badge">用户分享</span>'}
+      ${badge}
     </div>
     <div class="card-summary">${esc(it.summary)}</div>
+    ${it.quote ? `<div class="card-quote">${esc(it.quote)}</div>` : ''}
     <div class="tags">${skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}${it.skills.length>3?`<span class="tag">+${it.skills.length-3}</span>`:''}</div>
     <div class="card-foot">
       <span>${esc((it.approvedAt || '').slice(0, 10))}</span>
-      <button class="copy" data-copy="${it.id}">${it.shareUrl ? '复制链接' : '查看说明'}</button>
+      <button class="copy" data-copy="${it.id}">${footAction}</button>
     </div>
   </article>`;
 }
@@ -680,18 +717,26 @@ function showSheet(it){
     ${SHOT_IDS.indexOf(String(it.id)) >= 0 ? `<img class="hero-shot" src="shots/${it.id}.jpg" alt="${esc(it.name)} 界面预览">` : ''}
     <div class="meta-row">
       <span class="tag">${esc(it.scene)}</span>
-      ${it.source==='official' ? '<span class="badge official">官方预置</span>' : '<span class="badge">用户分享</span>'}
+      ${it.source==='official' ? '<span class="badge official">官方预置</span>' : (it.kind==='recipe' ? '<span class="badge">配方 · 可自建</span>' : '<span class="badge">用户分享</span>')}
       <span class="badge">${esc((it.approvedAt || '').slice(0, 10))} 收录</span>
     </div>
     ${it.audience ? `<div class="block"><h3>适合谁</h3><p>${esc(it.audience)}</p></div>` : ''}
     <div class="block"><h3>它解决什么</h3><p>${esc(it.summary)}</p></div>
+    ${it.problem ? `<div class="block"><h3>原来卡在哪</h3><p>${esc(it.problem)}</p></div>` : ''}
+    ${it.quote ? `<div class="block"><h3>一句原话</h3><p class="q">${esc(it.quote)}</p></div>` : ''}
     ${it.skills.length ? `<div class="block"><h3>预置技能</h3><div class="tags">${it.skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
     ${(it.plugins||[]).length ? `<div class="block"><h3>预置插件</h3><div class="tags">${it.plugins.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
     ${it.usage && hasLink ? `<div class="block"><h3>怎么用</h3><p>${esc(it.usage)}</p></div>` : ''}
-    <div class="block"><h3>${hasLink ? '导入链接' : '打开方式'}</h3>
+    ${it.starter ? `<div class="block"><h3>开场指令 · 直接复制</h3>
+      <div class="link-box"><input readonly value="${esc(it.starter)}"><button class="btn primary" onclick="copyStarter(${it.id})">复制</button></div>
+      <div class="tip">新建工作台后把这段贴进偏好设置，再把上面列出的技能勾上，就是这套。</div>
+    </div>` : ''}
+    <div class="block"><h3>${hasLink ? '导入链接' : '怎么得到它'}</h3>
       ${hasLink ? `<div class="link-box"><input readonly value="${esc(it.shareUrl)}"><button class="btn primary" onclick="doCopyById(${it.id})">复制链接</button></div>
         <div class="tip">在豆包工作里打开「工作台 → 导入」，粘贴这条链接，整套技能与插件会一起搬过来。</div>`
-      : `<p>不需要导入。${esc(it.usage || '这是豆包工作自带的预置场景，打开电脑版豆包工作，点左侧「工作台」入口直接切换。')}</p>`}
+      : (it.kind === 'recipe'
+        ? `<p>这条没有现成链接。照上面勾好技能，把「开场指令」贴进新工作台的偏好设置，几分钟就能复刻一套属于你的版本。</p>`
+        : `<p>不需要导入。${esc(it.usage || '这是豆包工作自带的预置场景，打开电脑版豆包工作，点左侧「工作台」入口直接切换。')}</p>`)}
     </div>
     ${relHTML(it)}
     <div class="sheet-foot">
@@ -721,7 +766,10 @@ $('#mask').addEventListener('click', e=>{ if(e.target.id === 'mask') closeSheet(
 document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeSheet(); });
 
 async function doCopy(it, textOnly){
-  if(!it.shareUrl){ toast('这是官方预置场景，打开豆包工作直接切换即可'); return; }
+  if(!it.shareUrl){
+    toast(it.kind === 'recipe' ? '这条是配方，照清单自建，没有导入链接' : '这是官方预置场景，打开豆包工作直接切换即可');
+    return;
+  }
   const text = textOnly
     ? `【工作台推荐】${it.name}\n${it.summary}\n导入链接：${it.shareUrl}`
     : it.shareUrl;
@@ -731,6 +779,12 @@ async function doCopy(it, textOnly){
 window.doCopyById = async (id, textOnly)=>{
   const it = S.items.find(i=>i.id==id) || DATA.items.find(i=>i.id==id);
   if(it) doCopy(it, textOnly);
+};
+window.copyStarter = async id=>{
+  const it = DATA.items.find(i => i.id == id);
+  if(!it || !it.starter) return;
+  const ok = await copyText(it.starter);
+  toast(ok ? '开场指令已复制，去新建工作台粘贴' : '复制失败，请手动选中');
 };
 window.closeSheet = closeSheet;
 window.reportItem = async id=>{
@@ -743,129 +797,57 @@ window.reportItem = async id=>{
 };
 
 /* ===== 投稿 ===== */
+const SUBMIT_FORM = "https://my.feishu.cn/share/base/shrcnUcOhmmrxYTQnGYhgTK4UOd";
+
+function submitTemplate(){
+  return [
+    '【工作台投稿】',
+    '名称：',
+    '分享链接：',
+    '适用场景：',
+    '它替你干了什么：',
+    '原来卡在哪：',
+    '一句原话：',
+    '预置技能：',
+    '署名：',
+    '联系方式：'
+  ].join('\n');
+}
+
 function renderSubmit(){
   $('#main').innerHTML = `
   <section class="page">
     <div class="page-head">
       <div class="eyebrow">Submit</div>
       <h1>投稿一个工作台</h1>
-      <p>把你调好的那套交出来：预置了哪些技能、适合谁、怎么用。填完会生成一条 GitHub 投稿，审核合并后出现在市集里，别人点一下就能导入。</p>
+      <p>不用填十几栏，也不用注册账号。把分享链接、它替你省掉的那一步、还有第一句话怎么说交出来，剩下的我来整理成卡片。</p>
     </div>
-    <div id="subbox">
-      <form class="card" id="f" novalidate>
-        <div class="row">
-          <div class="field" id="f-name">
-            <label>工作台名称 <span class="req">·必填</span></label>
-            <input name="name" maxlength="30" placeholder="例如：考公备考工作台">
-            <div class="err">至少 2 个字，30 字以内</div>
-          </div>
-          <div class="field" id="f-scene">
-            <label>场景分类 <span class="req">·必填</span></label>
-            <select name="scene">${META.scenes.map(s=>`<option>${esc(s)}</option>`).join('')}</select>
-            <div class="err">请选择分类</div>
-          </div>
-        </div>
-        <div class="field" id="f-summary">
-          <label>一句话简介 <span class="req">·必填</span></label>
-          <textarea name="summary" maxlength="200" placeholder="它替谁解决什么问题？例如：把行测、申论、面试的备考流程和资料整理成一条线，适合在职备考的人。"></textarea>
-          <div class="err">至少 6 个字，说清它到底做什么</div>
-        </div>
-        <div class="row">
-          <div class="field" id="f-author">
-            <label>署名</label>
-            <input name="author" maxlength="20" placeholder="昵称或职业，不填则为匿名贡献者">
-            <div class="hint">会显示在卡片上</div>
-          </div>
-          <div class="field" id="f-audience">
-            <label>适合谁</label>
-            <input name="audience" maxlength="80" placeholder="例如：在职备考 / 大三学生 / 独立设计师">
-          </div>
-        </div>
-        <div class="field" id="f-link">
-          <label>工作台分享链接 <span class="req">·必填</span></label>
-          <input name="shareUrl" maxlength="300" placeholder="https://…">
-          <div class="hint">在豆包工作的工作台卡片上点「分享」，复制链接粘贴到这里。仅接受豆包 / 飞书域名。</div>
-          <div class="err">需为 doubao.com / doubao.link / feishu.cn 下的链接</div>
-        </div>
-        <div class="row">
-          <div class="field" id="f-skills">
-            <label>预置技能</label>
-            <input name="skills" maxlength="300" placeholder="逗号分隔，最多 12 个：简历定制, 模拟面试, 岗位调研">
-          </div>
-          <div class="field" id="f-plugins">
-            <label>预置插件</label>
-            <input name="plugins" maxlength="200" placeholder="逗号分隔，最多 8 个：本地电脑, 云盘">
-          </div>
-        </div>
-        <div class="field">
-          <label>怎么用</label>
-          <textarea name="usage" maxlength="1000" placeholder="先说什么、给什么资料、有什么坑。写清楚别人上手就快。"></textarea>
-        </div>
-        <div class="field">
-          <label>联系方式（不公开）</label>
-          <input name="contact" maxlength="60" placeholder="邮箱 / 微信，仅在链接失效时联系你">
-        </div>
-        <label class="agree">
-          <input type="checkbox" name="agree">
-          <span>我确认这个工作台是我自己创建或有权分享的，内容不侵犯他人权益、不含违法或敏感信息；同意由站方审核后展示，并接受必要时下架。</span>
-        </label>
-        <div class="form-foot">
-          <button class="btn primary" type="submit" id="subbtn">提交审核</button>
-          <span class="status" id="substatus"></span>
-        </div>
-      </form>
+    <div class="submit-main">
+      <a class="btn primary big" href="${SUBMIT_FORM}" target="_blank" rel="noopener">打开投稿表单 ↗</a>
+      <div class="sub-note">表单在飞书上，匿名填写、不用登录 · 收到后 1–2 天内上架 · 上架前会先跟你确认署名</div>
+    </div>
+    <div class="prep">
+      <div class="prep-head">填之前先准备好这几样</div>
+      <ol>
+        <li><b>分享链接</b><span>工作台卡片右上角点「分享」，复制那条 doubao.com 链接。</span></li>
+        <li><b>它替你干了什么</b><span>一句实话，别写功能清单。「以前两小时，现在十分钟」就够。</span></li>
+        <li><b>原来卡在哪</b><span>这件事手动做最烦的那一步。别人靠这句判断要不要用。</span></li>
+        <li><b>一句原话</b><span>你跟它说过、或它回过你的一句。选填，但卡片上最显眼的就是它。</span></li>
+      </ol>
+    </div>
+    <div class="alt">
+      <div class="alt-head">不想填表？</div>
+      <p>把下面这段复制下来，填好发微信或邮件给站主也一样。</p>
+      <textarea readonly id="tmpl">${esc(submitTemplate())}</textarea>
+      <button class="btn" onclick="copyTemplate()">复制模板</button>
     </div>
   </section>`;
-  const f = $('#f');
-  f.addEventListener('submit', async e=>{
-    e.preventDefault();
-    if(!validate(f)) return;
-    const data = new FormData(f);
-    const v = n => String(data.get(n) || '').trim();
-    const title = `[工作台投稿] ${v('name')}`;
-    const body = [
-      '### 工作台投稿', '',
-      `**名称**：${v('name')}`,
-      `**分类**：${v('scene')}`,
-      `**一句话简介**：${v('summary')}`,
-      `**署名**：${v('author') || '匿名贡献者'}`,
-      `**适合谁**：${v('audience') || '—'}`,
-      `**预置技能**：${v('skills') || '—'}`,
-      `**预置插件**：${v('plugins') || '—'}`,
-      '',
-      '**怎么用**：', v('usage') || '—', '',
-      '**导入链接**：', v('shareUrl'), '',
-      `**联系方式（不公开）**：${v('contact') || '—'}`,
-      '', '_我确认该工作台由我创建或有权分享，同意审核后展示。_'
-    ].join('\n');
-    $('#subbox').innerHTML = `
-      <div class="done">
-        <div class="ok">↗</div>
-        <h2>投稿内容已生成</h2>
-        <p>点下面的按钮去 GitHub 提交这一条。首次需要在 GitHub 登录（免费账号即可），提交后由站主审核合并，一般 1～2 天。</p>
-        <div class="form-foot" style="justify-content:center">
-          <a class="btn primary" href="https://github.com/${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}" target="_blank" rel="noopener">打开 GitHub 提交</a>
-          <button class="btn" onclick="renderSubmit()">再投一个</button>
-        </div>
-        <div class="tip" style="text-align:left;margin-top:22px">没有 GitHub 账号？把下面这段直接复制发给站主：<br><textarea readonly style="width:100%;margin-top:8px;min-height:120px;font-size:12px;border:1px solid #E5E2D8;border-radius:8px;padding:10px">${esc(title + '\n' + body)}</textarea></div>
-      </div>`;
-  });
 }
 window.renderSubmit = renderSubmit;
-
-function validate(f){
-  let ok = true;
-  const bad = (id, cond)=>{ const el = $('#'+id); el.classList.toggle('bad', cond); if(cond) ok = false; };
-  const v = n => (f.querySelector(`[name="${n}"]`).value || '').trim();
-  bad('f-name', v('name').length < 2);
-  bad('f-summary', v('summary').length < 6);
-  bad('f-link', !/^https?:\/\/([\w.-]*\.)?(doubao\.com|doubao\.link|feishu\.cn)/i.test(v('shareUrl')));
-  if(!f.querySelector('[name="agree"]').checked){
-    toast('请先勾选投稿须知'); ok = false;
-  }
-  if(!ok){ const b = $('.field.bad'); if(b) b.scrollIntoView({behavior:'smooth',block:'center'}); }
-  return ok;
-}
+window.copyTemplate = async ()=>{
+  const ok = await copyText(submitTemplate());
+  toast(ok ? '模板已复制，填好发我就行' : '复制失败，请手动选中');
+};
 
 /* ===== 规则页 ===== */
 function renderAbout(){
@@ -877,7 +859,8 @@ function renderAbout(){
       <p>豆包工作上线了「工作台」：把某个职业常用的技能、插件与偏好打包成一个空间。但工作台散落在每个人的客户端里，很难被同类的人发现——这就是市集存在的理由。</p>
     </div>
     <div class="card" style="cursor:default;max-width:760px;padding:32px">
-      <div class="block" style="margin-top:0"><h3>收录范围</h3><p>其一，豆包工作官方预置的专业场景，做索引方便查找；其二，用户自己创建并愿意分享的工作台。</p></div>
+      <div class="block" style="margin-top:0"><h3>收录范围</h3><p>三类。一是用户交出分享链接的工作台，点一下就能导入；二是配方：没有现成链接，但写清了原来卡在哪、开场第一句怎么说，照着搭一遍就有；三是豆包工作官方预置的专业场景，做索引方便查找。</p></div>
+      <div class="block"><h3>怎么上架</h3><p>投稿走上面那张表单，不用注册任何账号。收到后 1–2 天内整理上架，上架前会先跟你确认署名方式；不适合收录的会说明原因，不会默默消失。</p></div>
       <div class="block"><h3>审核标准</h3><p>名字与简介说人话、能看出用途；链接可正常导入；不含违法、涉政、色情、赌博、诈骗等内容的技能或偏好指令；不冒用他人身份与品牌。</p></div>
       <div class="block"><h3>关于链接</h3><p>本站不保存任何工作台的内部配置，只保存作者公开的分享链接。导入发生在你自己的豆包工作客户端里，本站无法读取你的账号数据。</p></div>
       <div class="block"><h3>下架与举报</h3><p>条目详情页可举报，会跳到 GitHub 开一条 issue。链接失效、内容不当、侵权，核实后直接下架；作者也可以随时要求撤下自己的条目。</p></div>
@@ -897,10 +880,12 @@ function renderAbout(){
     DATA = { items: [] };
   }
   const pub = DATA.items || [];
+  const user = pub.filter(i => i.source !== 'official');
   META = { scenes: SCENES, stats: {
-    total: pub.filter(i => i.source === 'user').length,
+    total: user.length,
+    links: user.filter(i => i.shareUrl).length,
     official: pub.filter(i => i.source === 'official').length,
-    authors: new Set(pub.filter(i => i.source === 'user').map(i => i.author)).size,
+    authors: new Set(user.map(i => i.author)).size,
     copies: 0
   }};
   route();

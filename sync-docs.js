@@ -21,7 +21,9 @@ const items = db.items
   .map(i => ({
     id: i.id, name: i.name, author: i.author, scene: i.scene, summary: i.summary,
     audience: i.audience, skills: i.skills, plugins: i.plugins, usage: i.usage,
-    shareUrl: i.shareUrl, source: i.source, approvedAt: i.approvedAt
+    shareUrl: i.shareUrl, source: i.source, approvedAt: i.approvedAt,
+    // 正文三件套：卡片与详情页要用，漏了会被这条管道抹掉
+    kind: i.kind, problem: i.problem, quote: i.quote, starter: i.starter
   }));
 
 const out = { generatedAt: new Date().toISOString().slice(0, 10), items };
