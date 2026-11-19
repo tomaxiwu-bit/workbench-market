@@ -41,6 +41,8 @@ function loadDB() {
     try { return JSON.parse(fs.readFileSync(DB_FILE, 'utf8')); } catch (e) { }
   }
   const db = { items: seedItems(), nextId: 1, reports: [] };
+  // 种子条目默认 id 为 0，按顺序补唯一 id，避免详情页/收藏串号
+  db.items.forEach((it, i) => { if (!it.id) it.id = i + 1; });
   db.nextId = db.items.reduce((m, i) => Math.max(m, i.id), 0) + 1;
   saveDB(db);
   return db;

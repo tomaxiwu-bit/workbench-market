@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>工作台市集 · 分享你的豆包工作工作台</title>
 <meta name="description" content="工作台市集：收集与分享豆包工作的场景工作台。找到适合你职业的那一套技能与工具，也可以投稿自己的。">
+<meta name="theme-color" content="#FAF9F5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FAF9F5' stroke='%23E5E2D8'/%3E%3Ctext x='32' y='45' font-size='34' font-family='Georgia,serif' fill='%23D97757' text-anchor='middle'%3E%E5%8F%B0%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="工作台市集">
+<meta property="og:title" content="工作台市集 · 把好用的工作台交给同路的人">
+<meta property="og:description" content="13 个豆包工作场景工作台，含 5 个用户亲手调好的。复制链接就能导入，也可以交一份自己的。">
+<meta property="og:image" content="https://tomaxiwu-bit.github.io/workbench-market/shots/3.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="工作台市集 · 把好用的工作台交给同路的人">
+<meta name="twitter:description" content="13 个豆包工作场景工作台，含 5 个用户亲手调好的。复制链接就能导入。">
+<meta name="twitter:image" content="https://tomaxiwu-bit.github.io/workbench-market/shots/3.jpg">
 <style>
   :root{
     --paper:#FAF9F5; --paper-2:#F4F1E8; --card:#FFFFFF;
@@ -234,6 +245,8 @@
   footer{border-top:1px solid var(--line-soft);margin-top:30px;padding:24px 0 44px;font-size:12px;color:var(--muted)}
   footer .wrap{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
   footer .right{margin-left:auto}
+  footer a{color:var(--ink-soft);border-bottom:1px solid transparent;padding-bottom:1px}
+  footer a:hover{color:var(--accent-deep);border-bottom-color:var(--accent)}
 
   /* ---------- 界面截图 ---------- */
   .shot{
@@ -241,12 +254,25 @@
     border-bottom:1px solid var(--line-soft)
   }
   .shot img{width:100%;height:100%;object-fit:cover;object-position:50% 32%;display:block}
-  .shot.ph{display:grid;place-items:center;background:var(--paper-2);height:150px}
-  .shot.ph span{font-family:var(--serif);font-size:26px;color:#B9B4A6;letter-spacing:.02em}
+  .shot.ph{position:relative;display:flex;align-items:flex-end;height:150px;padding:14px 18px;overflow:hidden;background:linear-gradient(150deg,#F8F5ED,#EDE8D9)}
+  .shot.ph em{font-style:normal;font-size:10.5px;letter-spacing:.2em;color:#8E8A7C;position:relative;z-index:1}
+  .shot.ph span{position:absolute;right:-2px;bottom:-20px;font-family:var(--serif);font-size:88px;line-height:1;color:#FCFAF2;text-shadow:0 1px 0 #E2DDCB}
   .hero-shot{
     display:block;width:100%;height:236px;object-fit:cover;object-position:50% 32%;
     border:1px solid var(--line-soft);border-radius:9px;margin:2px 0 18px;background:#0D0D0C
   }
+
+  /* ---------- 加载骨架 ---------- */
+  .sk-card{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .sk-card .b1{
+    height:150px;
+    background:linear-gradient(100deg,#F1EEE5 20%,#F8F6EF 40%,#F1EEE5 60%);
+    background-size:200% 100%;animation:sweep 1.5s linear infinite
+  }
+  .sk-card .b2{height:15px;margin:18px 22px 0;border-radius:4px;background:#F1EEE5;width:58%}
+  .sk-card .b3{height:12px;margin:12px 22px 0;border-radius:4px;background:#F5F2EA}
+  .sk-card .b4{height:40px;margin:12px 22px 20px;border-radius:6px;background:#F5F2EA}
+  @keyframes sweep{0%{background-position:0% 0}100%{background-position:-200% 0}}
 
   /* ---------- 引导 ---------- */
   .guide{
@@ -322,6 +348,8 @@
   <div class="wrap">
     <span>工作台市集 · 民间工作台收录站</span>
     <span>非豆包官方站点 · 条目经人工审核</span>
+    <a href="https://github.com/tomaxiwu-bit/workbench-market" target="_blank" rel="noopener">仓库与投稿 issues</a>
+    <a href="#/about">收录规则</a>
     <span class="right">© <span id="yr"></span> 工作台市集</span>
   </div>
 </footer>
@@ -385,6 +413,13 @@ function route(){
 }
 window.addEventListener('hashchange', route);
 
+/* 加载时的骨架卡，避免白屏 */
+function skeleton(n){
+  return new Array(n).fill(0).map(() =>
+    `<div class="sk-card"><div class="b1"></div><div class="b2"></div><div class="b3"></div><div class="b4"></div></div>`
+  ).join('');
+}
+
 /* ===== 首页 ===== */
 async function renderHome(){
   const main = $('#main');
@@ -427,7 +462,7 @@ async function renderHome(){
       </select>
     </div>
     <div class="chips" id="chips"></div>
-    <div class="grid" id="grid"><div class="empty">正在加载…</div></div>
+    <div class="grid" id="grid">${skeleton(6)}</div>
     <section class="skills" id="skillcloud"></section>
   `;
   paintStats();
@@ -540,7 +575,7 @@ function shotHTML(it){
   if(SHOT_IDS.indexOf(String(it.id)) >= 0){
     return `<div class="shot"><img src="shots/${it.id}.jpg" alt="${esc(it.name)} 界面预览" loading="lazy"></div>`;
   }
-  return `<div class="shot ph"><span>${esc((it.name || '台').slice(0,1))}</span></div>`;
+  return `<div class="shot ph"><em>${esc(it.scene || '其他')}</em><span>${esc((it.name || '台').slice(0,1))}</span></div>`;
 }
 
 function cardHTML(it){
