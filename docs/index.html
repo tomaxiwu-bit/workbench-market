@@ -109,7 +109,7 @@
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding-bottom:24px}
   .card{
-    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:22px 22px 18px;
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:22px 22px 16px;
     display:flex;flex-direction:column;gap:11px;cursor:pointer;
     transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease
   }
@@ -326,8 +326,45 @@
     form.card{padding:22px}
     .done{padding:32px 20px}
     .guide{grid-template-columns:1fr}
+    footer .wrap.foot{grid-template-columns:1fr;gap:18px}
     .guide .step{border-right:0;border-bottom:1px solid var(--line-soft)}
   }
+  /* ---------- 编辑感装饰 ---------- */
+  .hero{position:relative;overflow:hidden}
+  .hero::after{
+    content:"市集";position:absolute;right:-18px;top:-16px;z-index:0;
+    font-family:var(--serif);font-size:clamp(110px,16vw,215px);line-height:.86;
+    color:#EDE6D3;letter-spacing:.05em;pointer-events:none;user-select:none
+  }
+  .hero > *{position:relative;z-index:1}
+
+  .badge.official{
+    background:transparent;color:var(--accent-deep);
+    border:1px solid rgba(217,119,87,.5);border-radius:3px;padding:2px 6px;
+    font-family:var(--serif);letter-spacing:.1em;transform:rotate(-3deg);
+    box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 4px rgba(217,119,87,.2)
+  }
+  .card-foot{
+    position:relative;border-top:1px dashed #DBD6C7;
+    margin-left:-22px;margin-right:-22px;padding:13px 22px 0
+  }
+  .card-foot::before,.card-foot::after{
+    content:"";position:absolute;top:-7px;width:13px;height:13px;border-radius:50%;background:var(--paper)
+  }
+  .card-foot::before{left:-8px}
+  .card-foot::after{right:-8px}
+
+  .index-note{
+    font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#A09C92;
+    margin:-8px 0 8px
+  }
+  .chips .chip{border-radius:3px}
+
+  footer .wrap.foot{display:grid;grid-template-columns:1.3fr .9fr .9fr;gap:26px;align-items:start}
+  .fcol{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .fcol b{font-family:var(--serif);font-weight:400;font-size:13.5px;color:var(--ink);letter-spacing:.01em;margin-bottom:3px}
+  .fcol a{align-self:flex-start}
+
 </style>
 </head>
 <body>
@@ -345,12 +382,23 @@
 <main class="wrap" id="main"></main>
 
 <footer>
-  <div class="wrap">
-    <span>工作台市集 · 民间工作台收录站</span>
-    <span>非豆包官方站点 · 条目经人工审核</span>
-    <a href="https://github.com/tomaxiwu-bit/workbench-market" target="_blank" rel="noopener">仓库与投稿 issues</a>
-    <a href="#/about">收录规则</a>
-    <span class="right">© <span id="yr"></span> 工作台市集</span>
+  <div class="wrap foot">
+    <div class="fcol">
+      <b>工作台市集</b>
+      <span>民间工作台收录站，条目经人工审核</span>
+      <span>非豆包官方站点</span>
+    </div>
+    <div class="fcol">
+      <b>索引</b>
+      <a href="#/submit">投稿一个工作台</a>
+      <a href="#/about">收录规则</a>
+      <a href="https://github.com/tomaxiwu-bit/workbench-market" target="_blank" rel="noopener">仓库与 issues</a>
+    </div>
+    <div class="fcol">
+      <b>说明</b>
+      <span>分享链接仅指向 doubao.com</span>
+      <span>© <span id="yr"></span> 工作台市集</span>
+    </div>
   </div>
 </footer>
 
@@ -461,6 +509,7 @@ async function renderHome(){
         <option value="name"${S.sort==='name'?' selected':''}>名称 A–Z</option>
       </select>
     </div>
+    <div class="index-note">按场景 · Index by scene</div>
     <div class="chips" id="chips"></div>
     <div class="grid" id="grid">${skeleton(6)}</div>
     <section class="skills" id="skillcloud"></section>
