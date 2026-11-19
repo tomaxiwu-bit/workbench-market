@@ -6,31 +6,32 @@
 
 | 版本 | 地址 | 投稿方式 | 适合 |
 |---|---|---|---|
-| **静态版（已上线）** | https://tomaxiwu-bit.github.io/workbench-market/ | 表单生成 GitHub Issue，站主合并 | 公开给人看，零服务器成本 |
+| **静态版（已上线）** | https://tomaxiwu-bit.github.io/workbench-market/ | 飞书公开表单，匿名可填，站主整理后上架 | 公开给人看，零服务器成本 |
 | **本地全功能版** | `node server.js` → localhost:8686 | 网页表单直接写入，后台口令审核 | 想零门槛收投稿、自己做审核 |
 
 静态版在 `docs/`，Pages 从 main 分支的 `/docs` 发布；仓库：https://github.com/tomaxiwu-bit/workbench-market
 
-### 静态版的数据怎么更新
+### 一次投稿怎么上架
 
-本地后台审核通过后，跑一次同步脚本，再推送：
+投稿走飞书公开表单（不用注册账号、匿名可填、不用登录）：
 
-```powershell
-node sync-docs.js
-git add docs/items.json
-git commit -m "update items"
-git push
-```
+<https://my.feishu.cn/share/base/shrcnUcOhmmrxYTQnGYhgTK4UOd>
 
-Pages 约 1 分钟后自动重建。
+收到后三步：
 
-> 静态版的投稿要 GitHub 账号（普通国内用户大多没有），所以两条线并行跑：静态版负责"被人看见"，隧道版负责"让人真能投"。
+1. 打开底表看新记录（<https://my.feishu.cn/base/M10MbFXYbanhCmsKJDdcyZt0njd> ），确认链接能导入、简介说清楚用途、授权那栏是「同意」
+2. 在 `tools/build_items.py` 里加一条：有分享链接的写 `kind:"share"`，只有方法论没链接的写 `kind:"recipe"`（配方会带「开场指令」，别人照着自己搭）；然后跑 `python tools/build_items.py`
+3. `node sync-docs.js` → `git add docs && git commit -m "new item" && git push`
+
+Pages 约 1 分钟后重建。条目分三类：`share`（有链接、点一下就能导入）、`recipe`（配方，给开场指令自建）、官方预置。
+
+> 表单那条链路只负责「收」，上架仍然要人过一遍——链接失效、夹带广告、冒名的最好在进站前就拦掉。
 
 ## 它有什么
 
 - **市集首页**：按场景分类（金融投研 / 医疗健康 / 教育教学 / 创意设计 / 求职发展 / 数据分析…）、搜索、最新 / 最热排序
 - **条目详情**：预置技能与插件、适合人群、使用说明、导入链接一键复制、推荐文案复制
-- **投稿页**：表单校验（名称 / 简介 / 链接域名白名单 / 投稿须知），提交后进入待审队列
+- **投稿页**：一键打开飞书公开表单（匿名、免登录、1–2 天上架），另附一段可复制的投稿模板，不想填表发微信也行
 - **审核后台**：口令进入，逐条通过、拒绝、删除
 - **防滥用**：同一 IP 每小时最多 5 次投稿、10 次举报；只接受 doubao.com / doubao.link / feishu.cn 域名的链接；所有输入做长度与字符清洗
 - **数据**：零依赖，落在 `data/store.json`，写入用临时文件 + 重命名，避免写坏
