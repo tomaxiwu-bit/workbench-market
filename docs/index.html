@@ -638,11 +638,11 @@ function showSheet(it){
     <div class="block"><h3>它解决什么</h3><p>${esc(it.summary)}</p></div>
     ${it.skills.length ? `<div class="block"><h3>预置技能</h3><div class="tags">${it.skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
     ${(it.plugins||[]).length ? `<div class="block"><h3>预置插件</h3><div class="tags">${it.plugins.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
-    ${it.usage ? `<div class="block"><h3>怎么用</h3><p>${esc(it.usage)}</p></div>` : ''}
+    ${it.usage && hasLink ? `<div class="block"><h3>怎么用</h3><p>${esc(it.usage)}</p></div>` : ''}
     <div class="block"><h3>${hasLink ? '导入链接' : '打开方式'}</h3>
       ${hasLink ? `<div class="link-box"><input readonly value="${esc(it.shareUrl)}"><button class="btn primary" onclick="doCopyById(${it.id})">复制链接</button></div>
         <div class="tip">在豆包工作里打开「工作台 → 导入」，粘贴这条链接，整套技能与插件会一起搬过来。</div>`
-      : `<p>这是豆包工作自带的预置场景，不需要导入：打开电脑版豆包工作，点左侧「工作台」入口直接切换。</p>`}
+      : `<p>不需要导入。${esc(it.usage || '这是豆包工作自带的预置场景，打开电脑版豆包工作，点左侧「工作台」入口直接切换。')}</p>`}
     </div>
     ${relHTML(it)}
     <div class="sheet-foot">
