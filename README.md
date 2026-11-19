@@ -4,6 +4,8 @@
 
 [线上站](https://tomaxiwu-bit.github.io/workbench-market/) · [投稿](https://my.feishu.cn/share/base/shrcnUcOhmmrxYTQnGYhgTK4UOd) · [收录规则](https://tomaxiwu-bit.github.io/workbench-market/#/about) · [数据](docs/items.json)
 
+![MIT License](https://img.shields.io/badge/license-MIT-%23B85F40)
+
 ![工作台市集首页](docs/preview-hero.png)
 
 ## 这是什么
@@ -94,4 +96,6 @@ Pages 约 1 分钟后重建。条目分三类：`share`、`recipe`、官方预�
 
 ## 说明
 
-民间收录站，非豆包官方站点。条目由站主人工核对后上架。
+民间收录站，非豆包官方站点；条目由站主人工核对后上架。
+
+**版权**：代码与站点以 [MIT](LICENSE) 许可开放，拿去改、拿去自建同类市集都行。站内条目里的文字——简介、原话、开场指令、署名——版权归各自作者，收录前都问过并得到公开署名的同意，作者随时可以要求下架或改署名。转载条目内容请保留作者署名。
