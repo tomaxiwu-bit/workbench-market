@@ -131,6 +131,11 @@
     font-size:13.5px;color:#4A4742;line-height:1.7;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:46px
   }
+  .card-quote{
+    font-family:var(--serif);font-size:12.5px;line-height:1.6;color:#7C776C;font-style:italic;
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+    padding-left:9px;border-left:2px solid var(--accent-soft);margin-top:-2px
+  }
   .tags{display:flex;gap:5px;flex-wrap:wrap}
   .tag{font-size:11px;color:#6E6A61;background:var(--paper-2);padding:2px 8px;border-radius:5px;letter-spacing:.01em}
   .card-foot{
@@ -169,6 +174,10 @@
     font-weight:600;margin:0 0 9px
   }
   .block p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.8;white-space:pre-wrap}
+  .block p.q{
+    font-family:var(--serif);font-size:15.5px;line-height:1.75;color:#4A4238;
+    border-left:3px solid var(--accent);padding-left:14px;white-space:normal
+  }
   .link-box{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
   .link-box input{
     flex:1;min-width:200px;height:40px;border:1px solid var(--line);border-radius:8px;
@@ -475,7 +484,7 @@ async function renderHome(){
     <section class="hero">
       <div class="eyebrow">Workbench Marketplace</div>
       <h1>把好用的<em>工作台</em>，<br>交给同路的人</h1>
-      <p class="lead">豆包工作的每个工作台，都是一套预置好的技能、插件与做事偏好。这里收着大家愿意分享的那一份——找到适合你职业的，也可以把自己的交出来。</p>
+      <p class="lead">豆包工作的每个工作台，都是一套预置好的技能、插件与做事偏好。这里收着别人愿意交出来的那一份：有的已经调顺手了，复制链接就能导入；有的写清了「原来卡在哪、第一句话怎么说」，照着搭一遍也就有了。</p>
       <div class="statline" id="stats"></div>
     </section>
     <section class="guide">
@@ -499,7 +508,7 @@ async function renderHome(){
       <div class="search"><span class="ico">⌕</span><input id="q" placeholder="搜工作台、技能或作者，例如「面试」「财报」" value="${esc(S.q)}"></div>
       <div class="seg" id="srcseg">
         <button data-s="" class="${S.source===''?'on':''}">全部</button>
-        <button data-s="user" class="${S.source==='user'?'on':''}">用户分享</button>
+        <button data-s="user" class="${S.source==='user'?'on':''}">用户做的</button>
         <button data-s="official" class="${S.source==='official'?'on':''}">官方预置</button>
         <button data-s="fav" class="${S.source==='fav'?'on':''}">我的收藏</button>
       </div>
@@ -531,9 +540,8 @@ async function renderHome(){
 function paintStats(){
   const st = META.stats || {};
   $('#stats').innerHTML = `
-    <div class="stat"><b>${fmt(st.total)}</b><span>用户分享</span></div>
+    <div class="stat"><b>${fmt(st.total)}</b><span>用户工作台</span></div>
     <div class="stat"><b>${fmt(st.official)}</b><span>官方预置</span></div>
-    <div class="stat"><b>${fmt(st.authors)}</b><span>贡献者</span></div>
     <div class="stat"><b>${fmt(st.copies)}</b><span>被取用</span></div>`;
 }
 
@@ -565,6 +573,9 @@ async function renderGrid(){
     }
     if(S.sort === 'name'){
       items = items.slice().sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'zh-Hans-CN'));
+    }else if(S.sort === 'new'){
+      const w = x => (x.source === 'official' ? 2 : (x.shareUrl ? 0 : 1));
+      items = items.slice().sort((a, b) => w(a) - w(b) || String(b.approvedAt || '').localeCompare(String(a.approvedAt || '')));
     }
     S.items = items;
     if(!items.length){
@@ -630,6 +641,10 @@ function shotHTML(it){
 function cardHTML(it){
   const skills = (it.skills || []).slice(0,3);
   const on = getFavs().indexOf(String(it.id)) >= 0;
+  const badge = it.source==='official'
+    ? '<span class="badge official">官方预置</span>'
+    : (it.kind==='recipe' ? '<span class="badge">配方 · 可自建</span>' : '<span class="badge">用户分享</span>');
+  const footAction = it.shareUrl ? '复制链接' : (it.kind==='recipe' ? '看配方' : '查看说明');
   return `
   <article class="card" data-id="${it.id}">
     ${shotHTML(it)}
@@ -640,13 +655,14 @@ function cardHTML(it){
         <div class="card-author">${esc(it.author)} · ${esc(it.scene)}</div>
       </div>
       <button class="fav ${on?'on':''}" data-fav="${it.id}" title="${on?'取消收藏':'收藏'}">${on?'★':'☆'}</button>
-      ${it.source==='official' ? '<span class="badge official">官方预置</span>' : '<span class="badge">用户分享</span>'}
+      ${badge}
     </div>
     <div class="card-summary">${esc(it.summary)}</div>
+    ${it.quote ? `<div class="card-quote">${esc(it.quote)}</div>` : ''}
     <div class="tags">${skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}${it.skills.length>3?`<span class="tag">+${it.skills.length-3}</span>`:''}</div>
     <div class="card-foot">
       <span>${it.copies||0} 次取用</span>
-      <button class="copy" data-copy="${it.id}">${it.shareUrl ? '复制链接' : '查看说明'}</button>
+      <button class="copy" data-copy="${it.id}">${footAction}</button>
     </div>
   </article>`;
 }
@@ -691,22 +707,31 @@ function showSheet(it){
     ${SHOT_IDS.indexOf(String(it.id)) >= 0 ? `<img class="hero-shot" src="shots/${it.id}.jpg" alt="${esc(it.name)} 界面预览">` : ''}
     <div class="meta-row">
       <span class="tag">${esc(it.scene)}</span>
-      ${it.source==='official' ? '<span class="badge official">官方预置</span>' : '<span class="badge">用户分享</span>'}
+      ${it.source==='official' ? '<span class="badge official">官方预置</span>' : (it.kind==='recipe' ? '<span class="badge">配方 · 可自建</span>' : '<span class="badge">用户分享</span>')}
       <span class="badge">${it.copies||0} 次取用</span>
     </div>
     ${it.audience ? `<div class="block"><h3>适合谁</h3><p>${esc(it.audience)}</p></div>` : ''}
     <div class="block"><h3>它解决什么</h3><p>${esc(it.summary)}</p></div>
+    ${it.problem ? `<div class="block"><h3>原来卡在哪</h3><p>${esc(it.problem)}</p></div>` : ''}
+    ${it.quote ? `<div class="block"><h3>一句原话</h3><p class="q">${esc(it.quote)}</p></div>` : ''}
     ${it.skills.length ? `<div class="block"><h3>预置技能</h3><div class="tags">${it.skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
     ${(it.plugins||[]).length ? `<div class="block"><h3>预置插件</h3><div class="tags">${it.plugins.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
     ${it.usage && hasLink ? `<div class="block"><h3>怎么用</h3><p>${esc(it.usage)}</p></div>` : ''}
-    <div class="block"><h3>${hasLink ? '导入链接' : '打开方式'}</h3>
+    ${it.starter ? `<div class="block"><h3>开场指令 · 直接复制</h3>
+      <div class="link-box"><input readonly value="${esc(it.starter)}"><button class="btn primary" onclick="copyStarter(${it.id})">复制</button></div>
+      <div class="tip">新建工作台后把这段贴进偏好设置，再把上面列出的技能勾上，就是这套。</div>
+    </div>` : ''}
+    <div class="block"><h3>${hasLink ? '导入链接' : '怎么得到它'}</h3>
       ${hasLink ? `<div class="link-box"><input readonly value="${esc(it.shareUrl)}"><button class="btn primary" onclick="doCopyById(${it.id})">复制链接</button></div>
         <div class="tip">在豆包工作里打开「工作台 → 导入」，粘贴这条链接，整套技能与插件会一起搬过来。</div>`
-      : `<p>不需要导入。${esc(it.usage || '这是豆包工作自带的预置场景，打开电脑版豆包工作，点左侧「工作台」入口直接切换。')}</p>`}
+      : (it.kind === 'recipe'
+        ? `<p>这条没有现成链接。照上面勾好技能，把「开场指令」贴进新工作台的偏好设置，几分钟就能复刻一套属于你的版本。</p>`
+        : `<p>不需要导入。${esc(it.usage || '这是豆包工作自带的预置场景，打开电脑版豆包工作，点左侧「工作台」入口直接切换。')}</p>`)}
     </div>
     ${relHTML(it)}
     <div class="sheet-foot">
-      <button class="btn" onclick="doCopyById(${it.id}, true)">复制推荐文案</button>
+      <button class="btn primary" onclick="shareItem(${it.id})">分享这一条</button>
+      ${it.shareUrl ? `<button class="btn" onclick="doCopyById(${it.id}, true)">复制推荐文案</button>` : ''}
       <button class="btn ghost" onclick="closeSheet()">关闭</button>
       <button class="report" onclick="reportItem(${it.id})">举报 / 链接失效</button>
     </div>`;
@@ -732,7 +757,10 @@ $('#mask').addEventListener('click', e=>{ if(e.target.id === 'mask') closeSheet(
 document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeSheet(); });
 
 async function doCopy(it, textOnly){
-  if(!it.shareUrl){ toast('这是官方预置场景，打开豆包工作直接切换即可'); return; }
+  if(!it.shareUrl){
+    toast(it.kind === 'recipe' ? '这条是配方，照清单自建，没有导入链接' : '这是官方预置场景，打开豆包工作直接切换即可');
+    return;
+  }
   const text = textOnly
     ? `【工作台推荐】${it.name}\n${it.summary}\n导入链接：${it.shareUrl}`
     : it.shareUrl;
@@ -749,7 +777,18 @@ window.doCopyById = async (id, textOnly)=>{
   const it = S.items.find(i=>i.id==id) || (await api('/api/items/'+id)).item;
   doCopy(it, textOnly);
 };
+window.copyStarter = async id=>{
+  const it = S.items.find(i => i.id == id) || (await api('/api/items/' + id)).item;
+  if(!it || !it.starter) return;
+  const ok = await copyText(it.starter);
+  toast(ok ? '开场指令已复制，去新建工作台粘贴' : '复制失败，请手动选中');
+};
 window.closeSheet = closeSheet;
+window.shareItem = async id=>{
+  const url = location.origin + location.pathname + '#/item/' + id;
+  const ok = await copyText(url);
+  toast(ok ? '这一条的链接已复制，发给别人会直接打开它' : '复制失败，地址栏里就是这条链接');
+};
 window.reportItem = async id=>{
   const r = prompt('说说哪里有问题（链接失效 / 内容不当 / 侵权），我们会在后台处理：');
   if(!r) return;

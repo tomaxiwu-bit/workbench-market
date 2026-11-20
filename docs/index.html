@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>工作台市集 · 分享你的豆包工作工作台</title>
-<meta name="description" content="工作台市集：收集与分享豆包工作的场景工作台。找到适合你职业的那一套技能与工具，也可以投稿自己的。">
+<meta name="description" content="工作台市集：豆包工作的场景工作台收录站。23 个场景，5 条复制链接就能导入，10 条写好「原来卡在哪」的配方可以照着自建，也可以匿名投稿自己的。">
 <meta name="theme-color" content="#FAF9F5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FAF9F5' stroke='%23E5E2D8'/%3E%3Ctext x='32' y='45' font-size='34' font-family='Georgia,serif' fill='%23D97757' text-anchor='middle'%3E%E5%8F%B0%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
@@ -17,6 +17,18 @@
 <meta name="twitter:title" content="工作台市集 · 把好用的工作台交给同路的人">
 <meta name="twitter:description" content="23 个豆包工作场景工作台：15 个用户亲手调的配方，其中 5 条复制链接就能导入。">
 <meta name="twitter:image" content="https://tomaxiwu-bit.github.io/workbench-market/social-preview.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "工作台市集",
+  "alternateName": "Workbench Marketplace",
+  "url": "https://tomaxiwu-bit.github.io/workbench-market/",
+  "description": "豆包工作（Doubao Work）场景工作台的收录与分享站：23 个场景，5 条可复制链接直接导入，10 条配方可照着自建，支持匿名投稿。",
+  "inLanguage": "zh-CN",
+  "isAccessibleForFree": true
+}
+</script>
 <style>
   :root{
     --paper:#FAF9F5; --paper-2:#F4F1E8; --card:#FFFFFF;
@@ -699,7 +711,9 @@ $('#main').addEventListener('click', async e=>{
 
 async function openItem(id){
   const it = DATA.items.find(i => String(i.id) === String(id));
-  if(it) showSheet(it); else toast('条目不存在');
+  if(!it){ toast('条目不存在'); return; }
+  showSheet(it);
+  try{ if(!location.hash.startsWith('#/item/')) history.replaceState(null, '', '#/item/' + it.id); }catch(e){}
 }
 
 function showSheet(it){
@@ -740,7 +754,8 @@ function showSheet(it){
     </div>
     ${relHTML(it)}
     <div class="sheet-foot">
-      <button class="btn" onclick="doCopyById(${it.id}, true)">复制推荐文案</button>
+      <button class="btn primary" onclick="shareItem(${it.id})">分享这一条</button>
+      ${hasLink ? `<button class="btn" onclick="doCopyById(${it.id}, true)">复制推荐文案</button>` : ''}
       <button class="btn ghost" onclick="closeSheet()">关闭</button>
       <button class="report" onclick="reportItem(${it.id})">举报 / 链接失效</button>
     </div>`;
@@ -785,6 +800,13 @@ window.copyStarter = async id=>{
   if(!it || !it.starter) return;
   const ok = await copyText(it.starter);
   toast(ok ? '开场指令已复制，去新建工作台粘贴' : '复制失败，请手动选中');
+};
+window.shareItem = async id=>{
+  const it = DATA.items.find(i => i.id == id);
+  if(!it) return;
+  const url = location.origin + location.pathname + '#/item/' + it.id;
+  const ok = await copyText(url);
+  toast(ok ? '这一条的链接已复制，发给别人会直接打开它' : '复制失败，地址栏里就是这条链接');
 };
 window.closeSheet = closeSheet;
 window.reportItem = async id=>{

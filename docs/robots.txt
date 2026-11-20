@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tomaxiwu-bit.github.io/workbench-market/sitemap.xml
